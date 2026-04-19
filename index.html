@@ -262,11 +262,16 @@
     position: relative;
   }
   .team-avatar {
-    width: 48px; height: 48px; border-radius: 50%;
+    width: 72px; height: 72px; border-radius: 50%;
     background: linear-gradient(135deg, var(--brand), var(--brand-light));
     color: #fff; display: flex; align-items: center; justify-content: center;
-    font-family: 'Playfair Display', serif; font-weight: 700; font-size: 18px;
+    font-family: 'Playfair Display', serif; font-weight: 700; font-size: 22px;
     margin-bottom: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(15,52,96,.12);
+  }
+  .team-avatar img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
   }
   .team-name { font-size: 16px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
   .team-role { font-size: 12px; color: var(--gold); text-transform: uppercase; letter-spacing: 1px; font-weight: 600; margin-bottom: 12px; }
@@ -780,7 +785,7 @@
 
     <div class="team-grid">
       <div class="team-card">
-        <div class="team-avatar">T</div>
+        <div class="team-avatar"><img src="images/team/tuyet.jpg" alt="Ms. Tuyết" loading="lazy"></div>
         <div class="team-name">Ms. Tuyết</div>
         <div class="team-role">Người dẫn nhịp chung</div>
         <ul class="team-tasks">
@@ -792,7 +797,7 @@
       </div>
 
       <div class="team-card">
-        <div class="team-avatar">Tr</div>
+        <div class="team-avatar"><img src="images/team/trang.jpg" alt="Ms. Trang" loading="lazy"></div>
         <div class="team-name">Ms. Trang</div>
         <div class="team-role">Giữ tiền & giữ venue</div>
         <ul class="team-tasks">
@@ -804,7 +809,7 @@
       </div>
 
       <div class="team-card">
-        <div class="team-avatar">Tn</div>
+        <div class="team-avatar"><img src="images/team/trinh.jpg" alt="Ms. Trinh" loading="lazy"></div>
         <div class="team-name">Ms. Trinh</div>
         <div class="team-role">Truyền thông & chăm khách</div>
         <ul class="team-tasks">
@@ -816,7 +821,7 @@
       </div>
 
       <div class="team-card">
-        <div class="team-avatar">Tù</div>
+        <div class="team-avatar"><img src="images/team/tung.jpg" alt="Mr. Tùng" loading="lazy"></div>
         <div class="team-name">Mr. Tùng</div>
         <div class="team-role">Làm tech — cầu nối với trường</div>
         <ul class="team-tasks">
@@ -828,7 +833,7 @@
       </div>
 
       <div class="team-card">
-        <div class="team-avatar">G</div>
+        <div class="team-avatar"><img src="images/team/gion.jpg" alt="Mr. Giôn" loading="lazy"></div>
         <div class="team-name">Mr. Giôn</div>
         <div class="team-role">Setup FHC & hậu cần</div>
         <ul class="team-tasks">
@@ -840,7 +845,7 @@
       </div>
 
       <div class="team-card">
-        <div class="team-avatar">S</div>
+        <div class="team-avatar"><img src="images/team/son.jpg" alt="Mr. Sơn" loading="lazy"></div>
         <div class="team-name">Mr. Sơn</div>
         <div class="team-role">MC — người cầm mic</div>
         <ul class="team-tasks">
