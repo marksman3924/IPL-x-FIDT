@@ -1166,61 +1166,11 @@
       </button>
     </div>
 
-    <!-- Scenario Display -->
-    <div class="scenario-grid" id="scenario-display">
-      <!-- P&L Summary Card -->
-      <div class="pnl-card">
-        <div class="pnl-header">
-          <div class="pnl-label" id="pnl-scenario-label">Base Case · Realistic</div>
-          <div class="pnl-title">P&L Summary</div>
-        </div>
-
-        <div class="pnl-rows">
-          <div class="pnl-row pnl-row-revenue">
-            <div class="pnl-row-label">Revenue</div>
-            <div class="pnl-row-value" id="val-revenue">15.200.000đ</div>
-            <div class="pnl-row-detail" id="detail-revenue">40 pax × 380k blended</div>
-          </div>
-
-          <div class="pnl-row pnl-row-cost">
-            <div class="pnl-row-label">Total Cost</div>
-            <div class="pnl-row-value" id="val-cost">12.000.000đ</div>
-            <div class="pnl-row-detail">Venue + Backdrop + Quà speaker</div>
-          </div>
-
-          <div class="pnl-divider"></div>
-
-          <div class="pnl-row pnl-row-surplus">
-            <div class="pnl-row-label">Surplus cho quỹ IPL8</div>
-            <div class="pnl-row-value" id="val-surplus">+3.200.000đ</div>
-            <div class="pnl-row-detail" id="detail-surplus">Margin ~21% · An toàn</div>
-          </div>
-        </div>
-
-        <div class="pnl-status" id="pnl-status">
-          <span class="pnl-status-dot"></span>
-          <span id="pnl-status-text">Break-even: cần tối thiểu <strong>32 pax</strong> tại blend 380k</span>
-        </div>
-      </div>
-
-      <!-- Cost Breakdown Card -->
-      <div class="breakdown-card">
-        <div class="pnl-header">
-          <div class="pnl-label">Cost Breakdown</div>
-          <div class="pnl-title">3 hạng mục chính</div>
-        </div>
-
-        <div class="breakdown-list" id="breakdown-list">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-    </div>
-
     <!-- Interactive Slider -->
     <div class="slider-card">
       <div class="slider-header">
         <div class="pnl-label">Explore Mode</div>
-        <div class="pnl-title">Tự điều chỉnh để test break-even</div>
+        <div class="pnl-title">Kéo slider — P&L &amp; Cost Breakdown update trực tiếp</div>
       </div>
 
       <div class="slider-controls">
@@ -1278,6 +1228,56 @@
       <div class="slider-hint" id="slider-hint">
         <span class="slider-hint-icon">●</span>
         <span id="slider-hint-text">Trạng thái an toàn: Surplus &ge; 15% of revenue</span>
+      </div>
+    </div>
+
+    <!-- Scenario Display -->
+    <div class="scenario-grid" id="scenario-display">
+      <!-- P&L Summary Card -->
+      <div class="pnl-card">
+        <div class="pnl-header">
+          <div class="pnl-label" id="pnl-scenario-label">Base Case · Realistic</div>
+          <div class="pnl-title">P&L Summary</div>
+        </div>
+
+        <div class="pnl-rows">
+          <div class="pnl-row pnl-row-revenue">
+            <div class="pnl-row-label">Revenue</div>
+            <div class="pnl-row-value" id="val-revenue">15.200.000đ</div>
+            <div class="pnl-row-detail" id="detail-revenue">40 pax × 380k blended</div>
+          </div>
+
+          <div class="pnl-row pnl-row-cost">
+            <div class="pnl-row-label">Total Cost</div>
+            <div class="pnl-row-value" id="val-cost">12.000.000đ</div>
+            <div class="pnl-row-detail">Venue + Backdrop + Quà speaker</div>
+          </div>
+
+          <div class="pnl-divider"></div>
+
+          <div class="pnl-row pnl-row-surplus">
+            <div class="pnl-row-label">Surplus cho quỹ IPL8</div>
+            <div class="pnl-row-value" id="val-surplus">+3.200.000đ</div>
+            <div class="pnl-row-detail" id="detail-surplus">Margin ~21% · An toàn</div>
+          </div>
+        </div>
+
+        <div class="pnl-status" id="pnl-status">
+          <span class="pnl-status-dot"></span>
+          <span id="pnl-status-text">Break-even: cần tối thiểu <strong>32 pax</strong> tại blend 380k</span>
+        </div>
+      </div>
+
+      <!-- Cost Breakdown Card -->
+      <div class="breakdown-card">
+        <div class="pnl-header">
+          <div class="pnl-label">Cost Breakdown</div>
+          <div class="pnl-title">3 hạng mục chính</div>
+        </div>
+
+        <div class="breakdown-list" id="breakdown-list">
+          <!-- Populated by JS -->
+        </div>
       </div>
     </div>
 
@@ -1430,33 +1430,10 @@
 
   function switchScenario(key) {
     const s = scenarios[key];
-
-    // Toggle buttons
-    document.querySelectorAll('.scenario-btn').forEach(btn => {
-      btn.classList.toggle('active', btn.dataset.scenario === key);
-    });
-
-    // P&L values
-    const revenue = s.pax * s.blend * 1000;
-    const totalCost = Object.values(s.costs).reduce((sum, c) => sum + c.amount, 0);
-    const surplus = revenue - totalCost;
-
-    document.getElementById('pnl-scenario-label').textContent = s.label;
-    document.getElementById('val-revenue').textContent = formatVND(revenue);
-    document.getElementById('detail-revenue').textContent = s.pax + ' pax × ' + s.blend + 'k blended';
-    document.getElementById('val-cost').textContent = formatVND(totalCost);
-    document.getElementById('val-surplus').textContent = '+' + formatVND(surplus);
-    document.getElementById('detail-surplus').textContent = s.detailSurplus;
-    document.getElementById('pnl-status-text').innerHTML = s.statusText;
-
-    // Sync sliders to scenario
     document.getElementById('pax-slider').value = s.pax;
     document.getElementById('price-slider').value = s.blend;
     document.getElementById('venue-slider').value = s.costs.venue.amount / 1000000;
     updateSliderUI();
-
-    // Breakdown
-    renderBreakdown(s.costs, totalCost);
   }
 
   function renderBreakdown(costs, totalCost) {
@@ -1479,7 +1456,7 @@
     document.getElementById('breakdown-list').innerHTML = html;
   }
 
-  // Slider live calculation
+  // Slider live calculation - feeds BOTH top P&L cards + bottom live bar
   function updateSliderUI() {
     const pax = parseInt(document.getElementById('pax-slider').value);
     const price = parseInt(document.getElementById('price-slider').value);
@@ -1489,7 +1466,6 @@
     document.getElementById('price-value').textContent = price + 'k';
     document.getElementById('venue-value').textContent = venueTr.toFixed(1) + 'tr';
 
-    // Update slider progress fill
     const paxPct = ((pax - 20) / (60 - 20)) * 100;
     const pricePct = ((price - 300) / (500 - 300)) * 100;
     const venuePct = ((venueTr - 3) / (15 - 3)) * 100;
@@ -1497,27 +1473,71 @@
     document.getElementById('price-slider').style.setProperty('--slider-progress', pricePct + '%');
     document.getElementById('venue-slider').style.setProperty('--slider-progress', venuePct + '%');
 
-    // Calculate - không có F&B (attendees tự túc), print chỉ 1 backdrop, gift fix 1tr
     const revenue = pax * price * 1000;
-    const venue = venueTr * 1000000;
-    const print = 800000 + Math.max(0, (pax - 40) * 8000); // base 800k + scale nhẹ cho backdrop lớn hơn
-    const gift = 1000000; // range 1tr cho speaker
-    const totalCost = venue + print + gift;
+    const venueAmt = venueTr * 1000000;
+    const printAmt = 800000 + Math.max(0, (pax - 40) * 8000);
+    const giftAmt = 1000000;
+    const totalCost = venueAmt + printAmt + giftAmt;
     const surplus = revenue - totalCost;
+    const marginPct = revenue > 0 ? (surplus / revenue) * 100 : 0;
+    const breakEvenPax = Math.ceil(totalCost / (price * 1000));
 
+    // Preset match → keep scenario button highlighted
+    const matchBase = pax === 40 && price === 380 && venueTr === 6;
+    const matchStretch = pax === 55 && price === 420 && venueTr === 10;
+    document.querySelectorAll('.scenario-btn').forEach(btn => {
+      if (btn.dataset.scenario === 'base') btn.classList.toggle('active', matchBase);
+      else if (btn.dataset.scenario === 'stretch') btn.classList.toggle('active', matchStretch);
+    });
+
+    // Top P&L card (live)
+    document.getElementById('pnl-scenario-label').textContent =
+      matchBase ? 'Base Case · Realistic' :
+      matchStretch ? 'Stretch Case · Ambitious' :
+      'Custom Scenario · Live';
+
+    document.getElementById('val-revenue').textContent = formatVND(revenue);
+    document.getElementById('detail-revenue').textContent = pax + ' pax × ' + price + 'k blended';
+    document.getElementById('val-cost').textContent = formatVND(totalCost);
+
+    const surplusEl = document.getElementById('val-surplus');
+    surplusEl.textContent = (surplus >= 0 ? '+' : '−') + formatVND(Math.abs(surplus));
+    surplusEl.style.color = surplus < 0 ? '#c23a1e' : '';
+
+    const detail = document.getElementById('detail-surplus');
+    if (surplus < 0) {
+      detail.textContent = 'Lỗ ' + Math.abs(marginPct).toFixed(0) + '% · Cần tăng pax/giá hoặc giảm venue cost';
+    } else if (marginPct < 15) {
+      detail.textContent = 'Margin ~' + marginPct.toFixed(0) + '% · Thấp, cân nhắc buffer cho rủi ro';
+    } else if (marginPct < 30) {
+      detail.textContent = 'Margin ~' + marginPct.toFixed(0) + '% · An toàn';
+    } else {
+      detail.textContent = 'Margin ~' + marginPct.toFixed(0) + '% · Surplus cao cho quỹ IPL8';
+    }
+
+    document.getElementById('pnl-status-text').innerHTML =
+      'Break-even: cần tối thiểu <strong>' + breakEvenPax + ' pax</strong> tại blend ' + price + 'k';
+
+    // Top Cost Breakdown (live)
+    const venueDesc = venueTr <= 6 ? 'Venue mid-tier (co-working/cafe sang trọng)'
+                   : venueTr <= 10 ? 'Venue premium (event space/khách sạn)'
+                   : 'Venue luxury (hotel 4-5 sao)';
+    renderBreakdown({
+      venue: { amount: venueAmt, desc: venueDesc },
+      print: { amount: printAmt, desc: 'Backdrop chính (FHC supplies do FIDT tự chuẩn bị)' },
+      gift:  { amount: giftAmt,  desc: 'Quà tặng speaker Mr. Huấn (FIDT) · range 1tr' }
+    }, totalCost);
+
+    // Bottom live result bar
     document.getElementById('live-revenue').textContent = formatVND(revenue);
     document.getElementById('live-cost').textContent = formatVND(totalCost);
-    document.getElementById('live-surplus').textContent = (surplus >= 0 ? '+' : '') + formatVND(surplus);
+    document.getElementById('live-surplus').textContent = (surplus >= 0 ? '+' : '-') + formatVND(Math.abs(surplus));
 
-    // Status
     const wrap = document.getElementById('live-surplus-wrap');
     const hint = document.getElementById('slider-hint');
     const hintText = document.getElementById('slider-hint-text');
-    const marginPct = (surplus / revenue) * 100;
-
     wrap.classList.remove('loss');
     hint.classList.remove('warn', 'danger');
-
     if (surplus < 0) {
       wrap.classList.add('loss');
       hint.classList.add('danger');
